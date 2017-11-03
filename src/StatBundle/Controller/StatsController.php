@@ -74,7 +74,7 @@ class StatsController extends Controller
     }
 
     /**
-     * @Route("/global/stats", name="global_stats")
+     * @Route("/", name="global_stats")
      */
     public function globalStatsAction()
     {

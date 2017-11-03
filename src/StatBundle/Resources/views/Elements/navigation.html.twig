@@ -15,6 +15,14 @@
                 </a>
             </li>
         </ul>
+        <ul class="nav navbar-nav navbar-right">
+            {% if app.user %}
+                <li class="first"><a href="/logout">Logout</a></li>
+            {% else %}
+                <li class="first"><a href="/login">Login</a></li>
+                <li class="first"><a href="/register">Register</a></li>
+            {% endif %}
+        </ul>
         <form class="navbar-form navbar-right" role="search" method="POST" action="{{ path("search_user_stats")}}">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Search" name="username">
