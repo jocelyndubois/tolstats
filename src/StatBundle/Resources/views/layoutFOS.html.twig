@@ -1,0 +1,25 @@
+{% extends "StatBundle::layout.html.twig" %}
+
+{% from "StatBundle:Elements:macros.html.twig" import getFOSUserPageName %}
+{% set _pageName = getFOSUserPageName() %}
+{% block title %}{{ _pageName }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+    {# Affichage des messages flash que définissent les contrôleurs du bundle #}
+    {% block flash_messages %}
+        {% for label, flashes in app.session.flashbag.all %}
+            {% for flash in flashes %}
+                <div class="alert alert-{{ label }} alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{ flash|trans|nl2br }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endblock %}
+    <div class="content fos">
+        {# Block des vues de FOSUB #}
+        {#<h1>{{ _pageName|default('account.my'|trans) }}</h1>#}
+        {% block fos_user_content %}
+        {% endblock fos_user_content %}
+    </div><!-- #content -->
+{% endblock %}

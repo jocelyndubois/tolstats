@@ -1,0 +1,87 @@
+{% macro showClassesSection(classes, total, userClass, user, team) %}
+    <div class="col-xs-12 col-sm-6 col-md-3">
+        <section>
+            <h2>{{ team }}</h2>
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>Class</th>
+                    <th>Number</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for classe in classes %}
+                    {% if classe.team and classe.team.name == team %}
+                        <tr>
+                            <td style="background-color: {{ classe.getColor }}; color: {{ classe.getTextColor }}">
+                                {{ classe.name }}
+                            </td>
+                            <td>
+                                {% set _number = 0 %}
+                                {% if userClass[team] is defined and userClass[team][classe.id] is defined %}
+                                    {% set _number = userClass[team][classe.id] %}
+                                {% endif %}
+                                {{ _number }} ({% if total > 0 %}{{ ((_number * 100) / total)|round }}%{% else %}0%{% endif %})
+                                {% if app.user == user %}
+                                    <a href="{{ path("increment_classe_user", {'user': user.id, 'classe': classe.id}) }}" class="glyphicon glyphicon-plus" aria-hidden="true"></a>
+                                    <a href="{{ path("decrement_classe_user", {'user': user.id, 'classe': classe.id}) }}" class="glyphicon glyphicon-minus" aria-hidden="true"></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+{% endmacro %}
+
+{% macro showClassesSectionGlobal(classes, total, classData, team) %}
+    <div class="col-xs-12 col-sm-6 col-md-3">
+        <section>
+            <h2>{{ team }}</h2>
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>Class</th>
+                    <th>Number</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for classe in classes %}
+                    {% if classe.team and classe.team.name == team %}
+                        <tr>
+                            <td style="background-color: {{ classe.getColor }}; color: {{ classe.getTextColor }}">
+                                {{ classe.name }}
+                            </td>
+                            <td>
+                                {% set _number = classData[classe.name] %}
+                                {{ _number }} ({% if total > 0 %}{{ ((_number * 100) / total)|round }}%{% else %}0%{% endif %})
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+{% endmacro %}
+
+{% macro getFOSUserPageName() %}
+    {% set currentPage = app.request.requesturi %}
+    {% if currentPage == path('fos_user_security_login') %}
+        {{ 'login'|trans }}
+    {% elseif currentPage == path('fos_user_registration_register') or currentPage == path('fos_user_registration_confirmed') %}
+        {{ 'signup'|trans }}
+    {% elseif currentPage == path('fos_user_profile_show') %}
+        {{ 'profile.show'|trans }}
+    {% elseif currentPage == path('fos_user_profile_edit') %}
+        {{ 'profile.edit'|trans }}
+    {% elseif currentPage == path('fos_user_change_password') %}
+        {{ 'profile.password.changing'|trans }}
+    {% elseif currentPage == path('fos_user_resetting_request') or currentPage == path('fos_user_resetting_send_email') or currentPage == path('fos_user_resetting_check_email') %}
+        {{ 'login.password.resetting'|trans }}
+    {% else %}
+        {{ 'account'|trans }}
+    {% endif %}
+{% endmacro %}

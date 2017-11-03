@@ -1,0 +1,114 @@
+{% extends 'StatBundle::layout.html.twig' %}
+{% from "StatBundle:Elements:macros.html.twig" import showClassesSectionGlobal %}
+
+{% block title %}Global - Stats{% endblock %}
+
+{% block body %}
+    <article>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-3">
+                <header>
+                    <h1>Global</h1>
+                    <div class="thumbnail">
+                        {% if mostPlayedClasse %}
+                            <img class="classe-avatar" src="{{ asset('bundles/stat/images/classes/'~mostPlayedClasse.name~'.png') }}" alt="{{ mostPlayedClasse.name }}" width="200" height="200" />
+                            <div class="caption">
+                                <h3>
+                                    Most played class ({{ classData[mostPlayedClasse.name] }})
+                                </h3>
+                            </div>
+                        {% endif %}
+                    </div>
+                </header>
+            </div>
+            {% for team in teams %}
+                {{ showClassesSectionGlobal(classes, total, classData, team.name) }}
+            {% endfor %}
+            <div class="clearfix-sm-block clearfix-xs-block"></div>
+            <div class="clearfix-sm-block clearfix-md-block clearfix-xs-block"></div>
+        </div>
+    </article>
+    <article>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <section>
+                    <div>
+                        <h2>Global stats</h2>
+                        <canvas id="globalStats"></canvas>
+                    </div>
+                </section>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <section>
+                    <div>
+                        <h2>Type stats</h2>
+                        <canvas id="typeStats"></canvas>
+                    </div>
+                </section>
+            </div>
+            <div class="clearfix-sm-block clearfix-xs-block"></div>
+            <div class="clearfix-sm-block clearfix-md-block clearfix-xs-block"></div>
+        </div>
+    </article>
+    <div class="modal fade" id="lockModal" tabindex="-1" role="dialog" aria-labelledby="lockModalLabel">
+        <div class="modal-dialog modal-lg" role="document" id="lockModalContent">
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var dataCount = {
+            labels: [
+                {% for team in teams %}
+                "{{ team.name|e('js') }}"{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ],
+            datasets: [
+                {
+                    data: [
+                        {% for team in teams %}
+                        "{{ teamData[team.name] }}"{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    backgroundColor: [
+                        {% for team in teams %}
+                        "{{ team.color }}"{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ]
+                }]
+        };
+
+        new Chart($('#globalStats'),{
+            type: 'pie',
+            data: dataCount
+        });
+
+        var dataCount = {
+            labels: [
+                {% for type in types %}
+                "{{ type.name|e('js') }}"{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ],
+            datasets: [
+                {
+                    data: [
+                        {% for type in types %}
+                        "{{ typeData[type.name] }}"{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    backgroundColor: [
+                        {% for type in types %}
+                        "{{ type.color }}"{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ]
+                }]
+        };
+
+        new Chart($('#typeStats'),{
+            type: 'pie',
+            data: dataCount
+        });
+    </script>
+{% endblock %}
