@@ -28,6 +28,9 @@
                 <li class="first"><a href="/login">Login</a></li>
                 <li class="first"><a href="/register">Register</a></li>
             {% endif %}
+            {% if app.user and app.user.hasRole('ROLE_ADMIN') %}
+                <li class="first"><a href="/admin">Admin</a></li>
+            {% endif %}
         </ul>
         <form class="navbar-form navbar-right" role="search" method="POST" action="{{ path("search_user_stats")}}">
             <div class="form-group">

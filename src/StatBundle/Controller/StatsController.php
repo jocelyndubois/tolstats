@@ -34,7 +34,7 @@ class StatsController extends Controller
     public function userStatsAction(User $user)
     {
         $em = $this->getDoctrine()->getManager();
-        $classes = $this->getDoctrine()->getRepository('StatBundle:Classe')->findAll();
+        $classes = $this->getDoctrine()->getRepository('StatBundle:Classe')->getAllClassesOrdered();
         $types = $this->getDoctrine()->getRepository('StatBundle:Type')->findAll();
         $teams = $this->getDoctrine()->getRepository('StatBundle:Team')->findAll();
         $userClass = array();
@@ -49,14 +49,16 @@ class StatsController extends Controller
         $mostPlayedClasse = null;
         $maxPlayed = 0;
         foreach ($user->getClasses() as $class) {
-            $userClass[$class->getClasse()->getTeam()->getName()][$class->getClasse()->getId()] = $class->getNumber();
-            $userClass[$class->getClasse()->getTeam()->getName()]['total'] += $class->getNumber();
-            $userType[$class->getClasse()->getType()->getName()] += $class->getNumber();
-            $total += $class->getNumber();
-            if ($class->getNumber() > $maxPlayed) {
-                $mostPlayedClasse = $class->getClasse();
-                $maxPlayed = $class->getNumber();
-            }
+           if (in_array($class->getClasse(), $classes)) {
+                $userClass[$class->getClasse()->getTeam()->getName()][$class->getClasse()->getId()] = $class->getNumber();
+                $userClass[$class->getClasse()->getTeam()->getName()]['total'] += $class->getNumber();
+                $userType[$class->getClasse()->getType()->getName()] += $class->getNumber();
+                $total += $class->getNumber();
+                if ($class->getNumber() > $maxPlayed) {
+                    $mostPlayedClasse = $class->getClasse();
+                    $maxPlayed = $class->getNumber();
+                }
+           }
         }
         return $this->render(
             'StatBundle:Stats:user_stats.html.twig',
@@ -80,7 +82,7 @@ class StatsController extends Controller
     {
         $userClasses = $this->getDoctrine()->getRepository('StatBundle:UserClasse')->findAll();
 
-        $classes = $this->getDoctrine()->getRepository('StatBundle:Classe')->findAll();
+        $classes = $this->getDoctrine()->getRepository('StatBundle:Classe')->getAllClassesOrdered();
         $types = $this->getDoctrine()->getRepository('StatBundle:Type')->findAll();
         $teams = $this->getDoctrine()->getRepository('StatBundle:Team')->findAll();
         $factions = $this->getDoctrine()->getRepository('StatBundle:Faction')->findAll();
@@ -108,17 +110,19 @@ class StatsController extends Controller
         }
 
         foreach ($userClasses as $userClass) {
-            $classData[$userClass->getClasse()->getName()] += $userClass->getNumber();
-            $teamData[$userClass->getClasse()->getTeam()->getName()] += $userClass->getNumber();
-            $typeData[$userClass->getClasse()->getType()->getName()] += $userClass->getNumber();
-            $factionData[$userClass->getClasse()->getFaction()->getName()] += $userClass->getNumber();
+            if (in_array($userClass->getClasse(), $classes)) {
+                $classData[$userClass->getClasse()->getName()] += $userClass->getNumber();
+                $teamData[$userClass->getClasse()->getTeam()->getName()] += $userClass->getNumber();
+                $typeData[$userClass->getClasse()->getType()->getName()] += $userClass->getNumber();
+                $factionData[$userClass->getClasse()->getFaction()->getName()] += $userClass->getNumber();
 
-            if ($classData[$userClass->getClasse()->getName()] > $maxPlayed) {
-                $mostPlayedClasse = $userClass->getClasse();
-                $maxPlayed = $classData[$userClass->getClasse()->getName()];
+                if ($classData[$userClass->getClasse()->getName()] > $maxPlayed) {
+                    $mostPlayedClasse = $userClass->getClasse();
+                    $maxPlayed = $classData[$userClass->getClasse()->getName()];
+                }
+
+                $total += $userClass->getNumber();
             }
-
-            $total += $userClass->getNumber();
         }
 
         return $this->render('StatBundle:Stats:global_stats.html.twig', array(

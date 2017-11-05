@@ -10,4 +10,23 @@ namespace StatBundle\Repository;
  */
 class ClasseRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * Get classes list withouth hidden one and ordered
+     *
+     * @return array
+     */
+    public function getAllClassesOrdered()
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+
+        $queryBuilder
+            ->select('c')
+            ->join('c.faction', 'f')
+            ->where('c.visible = true')
+            ->orderBy('f.name, c.name');
+
+        return $queryBuilder
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -1,0 +1,31 @@
+<nav class="navbar navbar-inverse">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-dashboard" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <span class="navbar-brand">ToLStats - Admin</span>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-dashboard">
+        <ul class="nav navbar-nav">
+            <li>
+                <a href="{{ path("admin_classe_list")}}">Classes</a>
+            </li>
+            <li>
+                <a href="{{ path("global_stats")}}">Factions</a>
+            </li>
+            <li>
+                <a href="{{ path("global_stats")}}">Teams</a>
+            </li>
+            <li>
+                <a href="{{ path("global_stats")}}">Types</a>
+            </li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ path('global_stats')}}" class="glyphicon glyphicon-off"></a></li>
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,53 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" type="text/css"/>
+{% endblock %}
+
+{% block body %}
+    <table id="datatable-classes" class="table-responsive">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Faction</th>
+                <th>Description</th>
+                <th>Goal</th>
+                <th>Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for classe in classes %}
+                <tr>
+                    <td style="color: {{ classe.faction.color }}">{{ classe.name }}</td>
+                    <td>{{ classe.faction.name }}</td>
+                    <td>{{ classe.description }}</td>
+                    <td>{{ classe.goal}}</td>
+                    <td>{{ classe.type.name }}</td>
+                    <td>
+                        {#<a href="#" class="btn btn-xs btn-success">show</a>#}
+                        <a href="{{ path('admin_classe_edit', {'id': classe.id}) }}" class="btn btn-xs btn-primary">edit</a>
+                        {#<a href="#" class="btn btn-xs btn-danger">remove</a>#}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        var dataTable = $('#datatable-classes').dataTable( {
+            "order": [[ 1, "asc" ]]
+        } );
+
+        $('#datatable-users').on('click', '.lockBtn', function(e) {
+        e.preventDefault();
+        generateModalContent($(this));
+        });
+
+    </script>
+{% endblock %}

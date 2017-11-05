@@ -33,14 +33,14 @@ class Classe
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="goal", type="string", length=255)
+     * @ORM\Column(name="goal", type="string", length=255, nullable=true)
      */
     private $goal;
 
@@ -69,6 +69,13 @@ class Classe
      * @ORM\OneToMany(targetEntity="UserClasse", mappedBy="classes", cascade={"persist", "remove"})
      */
     private $users;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="visible", type="boolean")
+     */
+    private $visible = true;
 
     /**
      * Get id
@@ -286,5 +293,29 @@ class Classe
         }
 
         return '#000000';
+    }
+
+    /**
+     * Set visible
+     *
+     * @param boolean $visible
+     *
+     * @return Classe
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+
+        return $this;
+    }
+
+    /**
+     * Get visible
+     *
+     * @return boolean
+     */
+    public function getVisible()
+    {
+        return $this->visible;
     }
 }

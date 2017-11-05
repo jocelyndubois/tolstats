@@ -1,0 +1,39 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% form_theme form 'AdminBundle:Form:bootstrap.html.twig' %}
+
+{% block body %}
+{#<div class="jumbotron">#}
+    {#<header>#}
+        {#<h1>{% if game is defined %}{{ 'admin.game.edit'|trans }}{% else %}{{ 'admin.game.add'|trans }}{% endif %}</h1>#}
+        {#<p>{{ 'admin.game.explanation'|trans|nl2br }}</p>#}
+    {#</header>#}
+{#</div>#}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-3">
+            <section>
+                {{ form_row(form.name) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.goal) }}
+                {{ form_row(form.visible) }}
+                {{ form_row(form.type) }}
+                {{ form_row(form.faction) }}
+                {{ form_row(form.team) }}
+                {% if classe is defined %}
+                    {{ form_row(form.save) }}
+                {% else %}
+                    {{ form_row(form.save, {'attr': {'class': 'btn-success'}, 'label': 'Add'}) }}
+                {% endif %}
+            </section>
+        </div>
+        <div class="clearfix-sm-block clearfix-xs-block"></div>
+        <div class="col-xs-12 col-sm-12 col-md-4">
+            <section>
+                {{ form_rest(form)}}
+            </section>
+        </div>
+        <div class="clearfix-sm-block clearfix-md-block clearfix-xs-block"></div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
