@@ -66,7 +66,7 @@ class Classe
     private $team;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserClasse", mappedBy="classes", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="UserClasse", mappedBy="classe", cascade={"persist", "remove"})
      */
     private $users;
 

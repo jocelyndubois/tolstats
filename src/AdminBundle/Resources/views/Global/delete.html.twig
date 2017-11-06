@@ -1,0 +1,25 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% form_theme form 'AdminBundle:Form:bootstrap.html.twig' %}
+
+{% block title %}
+    {{ type|capitalize }} deletion - {{ parent() }}
+{% endblock %}
+{% block body %}
+    <div class="jumbotron">
+        <header>
+            <h1>{{ type|capitalize }} deletion</h1>
+            {% if form is defined %}
+                <p>
+                    Are you sure you want to remove the {{ type }} {{ classe.name }} ?
+                </p>
+
+                <form action="{{ path(route, {'id' : classe.id}) }}" method="post">
+                    <input type="submit" class="btn btn-danger" value="Delete" />
+                    {# Génération du champ CSRF #}
+                    {{ form_rest(form) }}
+                </form>
+            {% endif %}
+        </header>
+    </div>
+{% endblock %}

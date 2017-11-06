@@ -3,12 +3,6 @@
 {% form_theme form 'AdminBundle:Form:bootstrap.html.twig' %}
 
 {% block body %}
-{#<div class="jumbotron">#}
-    {#<header>#}
-        {#<h1>{% if game is defined %}{{ 'admin.game.edit'|trans }}{% else %}{{ 'admin.game.add'|trans }}{% endif %}</h1>#}
-        {#<p>{{ 'admin.game.explanation'|trans|nl2br }}</p>#}
-    {#</header>#}
-{#</div>#}
     {{ form_start(form) }}
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-3">
@@ -20,7 +14,7 @@
                 {{ form_row(form.type) }}
                 {{ form_row(form.faction) }}
                 {{ form_row(form.team) }}
-                {% if classe is defined %}
+                {% if type == 'edit' %}
                     {{ form_row(form.save) }}
                 {% else %}
                     {{ form_row(form.save, {'attr': {'class': 'btn-success'}, 'label': 'Add'}) }}

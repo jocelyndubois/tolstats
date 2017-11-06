@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block body %}
+    <a href="{{ path('admin_classe_add') }}" class="btn btn-success">Add a Class</a>
+    <br />
+    <br />
     <table id="datatable-classes" class="table-responsive">
         <thead>
             <tr>
@@ -28,7 +31,7 @@
                     <td>
                         {#<a href="#" class="btn btn-xs btn-success">show</a>#}
                         <a href="{{ path('admin_classe_edit', {'id': classe.id}) }}" class="btn btn-xs btn-primary">edit</a>
-                        {#<a href="#" class="btn btn-xs btn-danger">remove</a>#}
+                        <a href="{{ path('admin_classe_delete', {'id': classe.id}) }}" class="btn btn-xs btn-danger">delete</a>
                     </td>
                 </tr>
             {% endfor %}
